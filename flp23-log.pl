@@ -11,18 +11,19 @@ isEOFEOL(C) :-
 	C == end_of_file;
 	(char_code(C,Code), Code==10).
 
+transform([H,_,H3|_], [H, H3]). 
 
 /** Read lines from stdout */
 read_lines(Ls) :-
 	read_line(L,C),
 	( C == end_of_file, Ls = [] ;
-	  read_lines(LLs), Ls = [L|LLs]
+	  read_lines(LLs), transform(L, TLine),  Ls = [TLine|LLs]
 	).
 
 
 start :-
 		prompt(_, ''),
-		read_lines(LL),
-		write(LL),
+		read_lines(Lines),
+		write(Lines),
 		halt.
 
