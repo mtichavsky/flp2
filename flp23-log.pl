@@ -31,6 +31,7 @@ read_lines(Ls) :-
 	  read_lines(LLs), transform(L, TLine),  Ls = [TLine|LLs]
 	).
 
+/** Returns the first vertex of the input - used to get starting vertext */
 get_start([[H1,_]| _], H1).
 
 /** Ignoring starting point in here */
@@ -40,10 +41,12 @@ visited_all([_|Points]) :-
 	%write(VisitedSorted == Points + "\n"),
 	VisitedSorted == Points.
 
+/* Add edges from the provided list to `edges` predicate */
 add_edges([]) :- !.
 add_edges([H|L]) :-
 	assert(edges(H)), add_edges(L).
 
+/** In Sorted, returns a sorted list of all points present in `edges` */
 get_points(Sorted) :-
 	findall(X, edges([X, _]), Res),
 	findall(Z, edges([_, Z]), Res2),
@@ -51,13 +54,17 @@ get_points(Sorted) :-
 	sort(New, Sorted).
 
 
-%findall(X, visited(X), Res),
-%findall(X, edges(["a", X]), Res),
+/** For a given point From, perform a possible step into point To */
 next_step(From, To) :-
 	(edges([From, To]) ; edges([To, From])), not(visited(To)).
 
 
-% TODO From variable could be omitted
+/** Perform step going through an edge (From <-> To).
+ *
+ * Points contains all possible points,
+ * Path contains the already transversed Path (sorted, so that it's easy to
+ * check for duplicates)
+ */
 perform_step(From, To, Points, Path) :-
 	start(To),
 	visited_all(Points),
@@ -73,11 +80,15 @@ perform_step(_, To, _, _) :-
 	retract(visited(To)), !, fail.
 
 
+/** Starting at point From, given points Points, Path contains a Hamiltonian
+ * path 8 
+ */
 run(From, Points, Path) :-
 	next_step(From, To),
 	perform_step(From, To, Points, Path).
 run(_, _, _). % nowhere to go
 
+/** Print a single path */
 print_results2([[L, R]]) :-
 	string_upper(L, L_out), string_upper(R, R_out),
 	write(L_out), write("-"), write(R_out).
@@ -87,6 +98,7 @@ print_results2([[L, R]|T]) :-
 	print_results2(T).
 
 
+/** Given list of paths, print all of them to stdout */
 print_results([]).
 print_results([H|T]) :-
 	print_results2(H),
@@ -104,3 +116,4 @@ main :-
 	findall(X, paths(X), Paths),
 	print_results(Paths),
 	halt.
+
