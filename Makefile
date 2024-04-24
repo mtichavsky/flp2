@@ -2,7 +2,7 @@
 .PHONY: build clean
 
 build:
-	swipl -q -g start -o flp23-log -c flp23-log.pl
+	swipl -q -g main -o flp23-log -c flp23-log.pl
 
 run: build
 	./flp23-log < fully_3.in
