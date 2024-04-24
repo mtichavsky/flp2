@@ -83,7 +83,7 @@ main :-
 	write("Points: " + Points + "\n"),
 	get_start(Lines, Start),
 	assert(start(Start)),
-	run(Start, Points, []),
+	findall(X, run(Start, Points, []), _),
 	findall(X, paths(X), Res), write("paths " + Res + "\n"),
 	halt.
 
