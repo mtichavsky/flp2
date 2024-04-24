@@ -41,8 +41,8 @@ add_edges([H|L]) :-
 	assert(edges(H)), add_edges(L).
 
 get_points(Sorted) :-
-	setof(X, edges([X, _]), Res),
-	setof(Z, edges([_, Z]), Res2),
+	findall(X, edges([X, _]), Res),
+	findall(Z, edges([_, Z]), Res2),
 	append(Res, Res2, New),
 	sort(New, Sorted).
 
