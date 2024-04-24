@@ -1,3 +1,7 @@
+/** FLP: 2nd project
+ *  Author: Milan Tichavský <xticha09>
+ */
+
 :- dynamic edges/1.
 :- dynamic visited/1.
 :- dynamic start/1.
@@ -74,16 +78,29 @@ run(From, Points, Path) :-
 	perform_step(From, To, Points, Path).
 run(_, _, _). % nowhere to go
 
+print_results2([[L, R]]) :-
+	string_upper(L, L_out), string_upper(R, R_out),
+	write(L_out), write("-"), write(R_out).
+print_results2([[L, R]|T]) :-
+	string_upper(L, L_out), string_upper(R, R_out),
+	write(L_out), write("-"), write(R_out), write(" "),
+	print_results2(T).
+
+
+print_results([]).
+print_results([H|T]) :-
+	print_results2(H),
+	write("\n"),
+	print_results(T).
 
 main :-
 	prompt(_, ''),
 	read_lines(Lines),
 	add_edges(Lines),
 	get_points(Points),
-	write("Points: " + Points + "\n"),
 	get_start(Lines, Start),
 	assert(start(Start)),
 	findall(X, run(Start, Points, []), _),
-	findall(X, paths(X), Res), write("paths " + Res + "\n"),
+	findall(X, paths(X), Paths),
+	print_results(Paths),
 	halt.
-
