@@ -22,7 +22,7 @@ isEOFEOL(C) :-
 	(char_code(C,Code), Code==10).
 
 transform([H,_,H3|_], [H_out, H3_out]) :-
-	string_lower(H, H_out), string_lower(H3, H3_out). 
+	downcase_atom(H, H_out), downcase_atom(H3, H3_out). 
 
 /** Read lines from stdout */
 read_lines(Ls) :-
@@ -38,7 +38,6 @@ get_start([[H1,_]| _], H1).
 visited_all([_|Points]) :-
 	findall(X, visited(X), Visited),
 	sort(Visited, VisitedSorted),
-	%write(VisitedSorted == Points + "\n"),
 	VisitedSorted == Points.
 
 /* Add edges from the provided list to `edges` predicate */
@@ -90,11 +89,11 @@ run(_, _, _). % nowhere to go
 
 /** Print a single path */
 print_results2([[L, R]]) :-
-	string_upper(L, L_out), string_upper(R, R_out),
-	write(L_out), write("-"), write(R_out).
+	upcase_atom(L, L_out), upcase_atom(R, R_out),
+	write(L_out), write('-'), write(R_out).
 print_results2([[L, R]|T]) :-
-	string_upper(L, L_out), string_upper(R, R_out),
-	write(L_out), write("-"), write(R_out), write(" "),
+	upcase_atom(L, L_out), upcase_atom(R, R_out),
+	write(L_out), write('-'), write(R_out), write(' '),
 	print_results2(T).
 
 
@@ -102,7 +101,7 @@ print_results2([[L, R]|T]) :-
 print_results([]).
 print_results([H|T]) :-
 	print_results2(H),
-	write("\n"),
+	write('\n'),
 	print_results(T).
 
 main :-
