@@ -1,7 +1,7 @@
 # FLP: Hamiltonian cycle
 # Author: Milan Tichavský <xticha09>
 
-TESTS_DIR="test-cases"
+TESTS_DIR=test-cases
 
 .PHONY: build clean
 
