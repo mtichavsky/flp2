@@ -16,7 +16,7 @@ To build and run the program using input from `fully_3.in`, run
 
 ```sh
 make build
-./flp23-log < fully_3.in
+./flp23-log < test-cases/fully_3.in
 ```
 
 To launch testing script, execute
